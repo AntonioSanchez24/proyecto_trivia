@@ -1,0 +1,76 @@
+export class Opciones extends Phaser.Scene {
+    constructor() {
+        super({ key: "Opciones" });
+    }
+
+    preload() {
+        this.load.video("background", "mp4/fondo.mp4", true);
+        this.load.image("gameover", "img/logo.png");
+        this.load.image("botonInicio", "img/botonInicio.png");
+        this.load.image("botonInicio", "img/botonInicio.png");
+        this.load.image("botonFacil", "img/botonFacil.png");
+        this.load.image("botonNormal", "img/botonNormal.png");
+        this.load.image("botonDificil", "img/botonDificil.png");
+
+        if (typeof game.registry.get("dificultad") == "undefined") {
+            this.dificultad = 2;
+        } else {
+            this.dificultad = game.registry.get("dificultad");
+        }
+    }
+
+    create() {
+        this.fondo = this.add.video(600, 350, "background");
+        this.fondo.play(true);
+        this.gameoverImage = this.add.image(750, 100, "gameover");
+        this.gameoverImage.setScale(0.25);
+        this.botonFacil = this.add.image(200, 250, "botonFacil");
+        this.botonFacil.setScale(0.5);
+        this.botonNormal = this.add.image(200, 450, "botonNormal");
+        this.botonNormal.setScale(0.5);
+        this.botonDificil = this.add.image(200, 650, "botonInicio");
+        this.botonDificil.setScale(0.5);
+        this.botonInicio5 = this.add.image(1200, 100, "botonInicio");
+        this.botonInicio5.setScale(0.25);
+
+        this.botonFacil.setInteractive();
+        this.botonFacil.on(
+            "pointerdown",
+            function (event) {
+                this.dificultad = 1;
+                alert("Facil!");
+            },
+            this
+        );
+
+        this.botonNormal.setInteractive();
+        this.botonNormal.on(
+            "pointerdown",
+            function (event) {
+                this.dificultad = 2;
+                alert("Normal!");
+            },
+            this
+        );
+
+        this.botonDificil.setInteractive();
+        this.botonDificil.on(
+            "pointerdown",
+            function (event) {
+                this.dificultad = 3;
+                alert("Dificil!");
+            },
+            this
+        );
+        this.botonInicio5.setInteractive();
+        this.botonInicio5.on(
+            "pointerdown",
+            function (event) {
+                game.registry.set("dificultad", this.dificultad);
+                alert(game.registry.get("dificultad") + " Volver.");
+                this.scene.start("menuInicio");
+            },
+            this
+        );
+    }
+}
