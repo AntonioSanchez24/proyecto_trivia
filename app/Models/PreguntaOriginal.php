@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class PreguntaOriginal extends Model
 {
-    use HasFactory;
+    protected $table = "pregunta_original";
+    protected $fillable = [
+        'pregunta',
+        'respuesta_correcta',
+        'respuestas_incorrectas',
+        'categoria',
+        'dificultad',
+    ];
+
 }

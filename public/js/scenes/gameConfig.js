@@ -1,10 +1,11 @@
+import { InicioPartida } from "./inicioPartida.js";
 import { menuInicio } from "./menuInicio.js"; 
 import { Opciones } from "./opciones.js";
 
 const config = {
     type: Phaser.WEBGL,
     parent: "juegoContainer",
-    scene: [menuInicio, Opciones],
+    scene: [menuInicio, Opciones, InicioPartida],
     scale: {
         mode: Phaser.Scale.ScaleModes.NONE,
         width: window.innerWidth,

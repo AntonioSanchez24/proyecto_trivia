@@ -29,3 +29,26 @@ Route::middleware([
         return view('juego');
     })->name('juego');
 });
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified', 
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    Route::get('/juego', function () {
+        return view('juego');
+    })->name('juego');
+
+    Route::group(['middleware' => 'rol'], function (){
+        Route::get('admin/crearPregunta', function () {
+            return view('admin.crearPregunta');
+        })->name('admin.crearPregunta');
+    });
+
+});
+
+
+

@@ -59,5 +59,17 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+        'role'
     ];
+
+    //Rol 2 -> Admin (Puede crear preguntas y eliminar contenido si lo ve conveniente), Rol 1 -> Moderador (Sólo puede moderar contenido, no crear preguntas.)
+    public function tieneRol(){
+        if($this->rol === 2){
+          return 1&&2;
+        }else if($this->role === 1){
+          return 1;
+        }else{
+          return redirect()->back();
+        }
+      }
 }
