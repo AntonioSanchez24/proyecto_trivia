@@ -4,7 +4,7 @@ export class Opciones extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video("background", "mp4/fondo.mp4", true);
+        this.load.video("background", "mp4/fondoFix.mp4", false, true);
         this.load.image("gameover", "img/logo.png");
         this.load.image("botonInicio", "img/botonInicio.png");
         this.load.image("botonVolver", "img/botonVolver.png");
@@ -20,8 +20,8 @@ export class Opciones extends Phaser.Scene {
     }
 
     create() {
-        this.fondo = this.add.video(600, 350, "background");
-        this.fondo.play(true);
+        this.fondoFix = this.add.video(600, 350, "background");
+        this.fondoFix.play(true);
         this.gameoverImage = this.add.image(750, 100, "gameover");
         this.gameoverImage.setScale(0.25);
         this.botonFacil = this.add.image(200, 250, "botonFacil");

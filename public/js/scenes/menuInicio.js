@@ -4,23 +4,26 @@ export class menuInicio extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video("background", "mp4/fondo.mp4", true);
+        this.load.video("background", "mp4/fondoFix.mp4", false, true);
         this.load.image("gameover", "img/logo.png");
         this.load.image("botonInicio", "img/botonInicio.png");
         this.load.image("botonOpciones", "img/botonOpciones.png");
         if (typeof game.registry.get("dificultad") == "undefined") {
             this.dificultad = 2;
             game.registry.set("dificultad", this.dificultad);
-            game.registry.set("pregunta", 1);
+            game.registry.set("pregunta", 0);
+            game.registry.set("puntuacion", 0);
+            game.registry.set("tiempo", 0);
         } else {
             this.dificultad = game.registry.get("dificultad");
-            game.registry.set("pregunta", 1);
+            game.registry.set("pregunta", 0);
+            game.registry.set("puntuacion", 0);
         }
     }
 
     create() {
-        this.fondo = this.add.video(600, 350, "background");
-        this.fondo.play(true);
+        this.fondoFix = this.add.video(600, 350, "background");
+        this.fondoFix.play(true);
         this.gameoverImage = this.add.image(750, 100, "gameover");
         this.gameoverImage.setScale(0.25);
         this.botonInicio = this.add.image(750, 300, "botonInicio");
@@ -31,7 +34,6 @@ export class menuInicio extends Phaser.Scene {
         this.botonInicio.on(
           "pointerdown",
           function (event) {
-              // ...
               this.scene.start("InicioPartida");
           },
           this
@@ -42,7 +44,7 @@ export class menuInicio extends Phaser.Scene {
             "pointerdown",
             function (event) {
                 // ...
-                this.scene.start("Opciones");
+                    this.scene.start("Opciones");
             },
             this
         );

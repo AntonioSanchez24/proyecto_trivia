@@ -4,16 +4,32 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="shrink-5 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ml-16 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Inicio') }}
+                    </x-nav-link>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-16 sm:flex">
+                        <x-nav-link href="{{ route('juego') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Jugar') }}
+                        </x-nav-link>
+                    <x-nav-link href="{{ route('calificaciones') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Calificaciones') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('comunidad') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Comunidad') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('creadorPreguntas.index') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Crear preguntas') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        {{ __('Juego personalizado') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -21,7 +37,7 @@
             <div class="hidden sm:flex sm:items-center sm:ml-6">
                 <!-- Teams Dropdown -->
                 @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
-                    <div class="ml-3 relative">
+                    <div class="ml-4">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
                                 <span class="inline-flex rounded-md">
@@ -77,7 +93,7 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="h-12 w-12 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">

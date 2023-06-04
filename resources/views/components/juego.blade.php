@@ -6,5 +6,3 @@
 </head>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.js"></script>
-<script src={{asset('js/scenes/gameConfig.js')}} type="module"></script>

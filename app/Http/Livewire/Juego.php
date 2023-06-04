@@ -17,8 +17,7 @@ class Juego extends Component
     public function render()
     
     {
-        $this->preguntas = PreguntaOriginal::limit(15)->get();
-        $this->preguntasJuego = PreguntaOriginal::limit(15)->get(); 
+        $this->preguntasJuego = PreguntaOriginal::all(); 
         return view('livewire.juego');
     }
 }
