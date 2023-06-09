@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paquete_preguntas', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombre');
-            $table->string('categoria');
-            $table->integer('user_id');
-            $table->timestamps();
+        Schema::table('paquete_preguntas', function ($table) {
+            $table->string('photo_url')->afterColumn('categoria');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paquete_preguntas');
+        Schema::table('paquete_preguntas', function ($table) {
+            $table->dropColumn('photo_url');
+        });
     }
 };

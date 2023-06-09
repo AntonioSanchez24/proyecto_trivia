@@ -56,6 +56,32 @@ export class Pregunta extends Phaser.Scene {
             this.pregunta.setOrigin(0.5),
         ]);
         this.añadirTexto(this);
+        let textoA = this.preguntaContainerA.list[1];
+        let textoB = this.preguntaContainerB.list[1];
+        let textoC = this.preguntaContainerC.list[1];
+        let textoD = this.preguntaContainerD.list[1];
+
+        this.fitToContainer(textoA, this.preguntaContainerA);
+        this.fitToContainer(textoB, this.preguntaContainerB);
+        this.fitToContainer(textoC, this.preguntaContainerC);
+        this.fitToContainer(textoD, this.preguntaContainerD);
+        this.fitToContainer(this.preguntaContainer[1], this.preguntaContainer);
+    }
+
+    fitToContainer(text, container) {
+        var containerWidth = container.width;
+        var containerHeight = container.height;
+        var textWidth = text.getWidth();
+        var textHeight = text.getHeight();
+    
+        if (textWidth > containerWidth || textHeight > containerHeight) {
+            var scaleFactor = Math.min(
+                containerWidth / textWidth,
+                containerHeight / textHeight
+            );
+    
+            text.setFontSize(scaleFactor * parseInt(text.style.fontSize));
+        }
     }
 
     añadirTexto(scene) {
@@ -203,8 +229,9 @@ export class Pregunta extends Phaser.Scene {
             },
             this
         );
-
     }
+
+    
 
     resolverPregunta(scene, pregunta) {
         this.puntuaciones = [

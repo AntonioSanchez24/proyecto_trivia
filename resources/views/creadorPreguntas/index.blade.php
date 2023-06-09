@@ -1,0 +1,1 @@
+@livewire('creador-preguntas.index')

@@ -16,13 +16,13 @@
                         {{ __('Inicio') }}
                     </x-nav-link>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-16 sm:flex">
-                        <x-nav-link href="{{ route('juego') }}" :active="request()->routeIs('dashboard')">
+                        <x-nav-link href="{{ route('juego') }}" :active="request()->routeIs('juego')">
                             {{ __('Jugar') }}
                         </x-nav-link>
-                    <x-nav-link href="{{ route('calificaciones') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('calificaciones') }}" :active="request()->routeIs('calficaciones')">
                         {{ __('Calificaciones') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('comunidad') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('comunidad') }}" :active="request()->routeIs('comunidad')">
                         {{ __('Comunidad') }}
                     </x-nav-link>
                     <x-nav-link href="{{ route('creadorPreguntas.index') }}" :active="request()->routeIs('dashboard')">
@@ -93,7 +93,7 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="h-12 w-12 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="w-3/4 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">

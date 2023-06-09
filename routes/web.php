@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JuegoController;
 use App\Http\Controllers\JuegoPersonalizadoController;
+use App\Http\Controllers\CreadorPreguntasController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\CalificacionesController;
 
 
@@ -52,11 +54,12 @@ Route::middleware([
     Route::get('/comunidad', function () {
         return view('comunidad');
     })->name('comunidad');
+    Route::get('/perfil/{username}', [PerfilController::class, 'mostrarPerfil'])->name('perfil.mostrar');
 
 
     Route::get('creadorPreguntas', [CreadorPreguntasController::class, 'index'])->name('creadorPreguntas.index');
-    Route::get('creadorPreguntas-create', [CreadorPreguntasController::class, 'create'])->name('creadorPreguntas.create');
-    Route::get('creadorPreguntas-edit/{id}', [CreadorPreguntasController::class, 'edit'])->name('creadorPreguntas.edit');
+    Route::get('creadorPreguntas/create', [CreadorPreguntasController::class, 'create'])->name('creadorPreguntas.create');
+    Route::get('creadorPreguntas/edit/{id}', [CreadorPreguntasController::class, 'edit'])->name('creadorPreguntas.edit');
     Route::get('juegoPersonalizado', [JuegoPersonalizadoController::class, 'index'])->name('juegoPersonalizado.index');
     Route::get('juegoPersonalizado-subs', [JuegoPersonalizadoController::class, 'subs'])->name('juegoPersonalizado.subs');
     Route::get('juegoPersonalizado-play/{id}', [JuegoPersonalizadoController::class, 'play'])->name('juegoPersonalizado.play');

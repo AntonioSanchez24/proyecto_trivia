@@ -11,8 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function ($table) {
-            $table->string('amigos')->afterColumn('name');
-            $table->string('suscripciones')->afterColumn('amigos');
+            $table->string('description')->afterColumn('suscripciones');
         });
     }
 
@@ -22,8 +21,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', function ($table) {
-            $table->dropColumn('amigos');
-            $table->dropColumn('suscripciones');
+            $table->dropColumn('description');
         });
     }
 };

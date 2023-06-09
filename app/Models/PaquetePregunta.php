@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class PaquetePregunta extends Model
 {
     use HasFactory;
+
+    protected $table = "paquete_preguntas";
+    protected $fillable = [
+        'nombre',
+        'description',
+        'photo_url',
+        'respuestas_incorrectas',
+        'categoria',
+        'user_id',
+        'dificultad',
+    ];
 }
