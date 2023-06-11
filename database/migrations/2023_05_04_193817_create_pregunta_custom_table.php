@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->integer('paquete_pregunta');
             $table->string('pregunta');
-            $table->string('respuestas');
             $table->integer('dificultad');
-            $table->integer('respuesta_correcta');
+            $table->string('respuestas_incorrectas');
+            $table->string('respuesta_correcta');
             $table->string('categoria');
             $table->timestamps();
         });
