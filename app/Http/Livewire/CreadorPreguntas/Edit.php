@@ -19,16 +19,16 @@ class Edit extends Component
     public $photo_url;
     public $photo;
     public $paqueteId;
-
+    public $paquete;
     protected $listeners = ['finalizarSubida' => 'finalizarSubida'];
 
     public function mount($id) {
-        $paquete = PaquetePregunta::find($id);
-        $this->nombre = $paquete->nombre;
-        $this->categoria = $paquete->categoria;
-        $this->description = $paquete->description;
-        $this->photo_url = $paquete->photo_url;
-        $this->paqueteId = $paquete->id;
+        $this->paquete = PaquetePregunta::find($id);
+        $this->nombre = $this->paquete->nombre;
+        $this->categoria = $this->paquete->categoria;
+        $this->description = $this->paquete->description;
+        $this->photo_url = $this->paquete->photo_url;
+        $this->paqueteId = $this->paquete->id;
     }
 
     public function render()

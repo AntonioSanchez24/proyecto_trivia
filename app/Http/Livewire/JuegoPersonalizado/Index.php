@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\CreadorPreguntas;
+namespace App\Http\Livewire\JuegoPersonalizado;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -14,6 +14,7 @@ class Index extends Component
     use WithPagination;
     public $paquete_preguntas;
     public $search = "";
+    public $suscripciones;
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
@@ -21,6 +22,7 @@ class Index extends Component
     public function mount()
     {
         $this->paquete_preguntas = PaquetePregunta::all();
+        $this->suscripciones = json_decode(Auth::user()->suscripciones, true);
 
     }
 
@@ -32,7 +34,53 @@ class Index extends Component
             $paquetePreguntas = PaquetePregunta::paginate(10);
         }
 
-        return view('livewire.creador-preguntas.index', ['paquetePreguntas' => $paquetePreguntas]);
+        return view('livewire.juego-personalizado.index', ['paquetePreguntas' => $paquetePreguntas]);
+    }
+
+    public function suscribirse($id)
+    {
+        $usuario = Auth::user();
+
+        // Asegurándose de que "suscripciones" siempre sea un array
+        $suscripciones = $usuario->suscripciones ? json_decode($usuario->suscripciones, true) : [];
+
+        // Agregar el nuevo ID a la lista de suscripciones
+        $suscripciones[] = $id;
+
+        // Codificar la lista de suscripciones a JSON y guardarla en el usuario
+        $usuario->suscripciones = json_encode($suscripciones);
+
+        // Persistir los cambios en la base de datos
+        $usuario->save();
+
+        $this->suscripciones = json_decode(Auth::user()->suscripciones, true);
+
+    }
+
+    public function desuscribirse($id)
+    {
+        $usuario = Auth::user();
+
+        // Asegurándose de que "suscripciones" siempre sea un array
+        $suscripciones = $usuario->suscripciones ? json_decode($usuario->suscripciones, true) : [];
+
+        // Buscar la posición del ID en la lista de suscripciones
+        $key = array_search($id, $suscripciones);
+
+        // Si el ID está en la lista de suscripciones, eliminarlo
+        if ($key !== false) {
+            unset($suscripciones[$key]);
+        }
+
+        // Codificar la lista de suscripciones a JSON y guardarla en el usuario
+        $usuario->suscripciones = json_encode($suscripciones);
+
+        // Persistir los cambios en la base de datos
+        $usuario->save();
+
+        $this->suscripciones = json_decode(Auth::user()->suscripciones, true);
+        
+
     }
 
 }

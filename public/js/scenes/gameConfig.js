@@ -1,13 +1,15 @@
 import { InicioPartida } from "./inicioPartida.js";
+import { FinalPartida } from "./finalPartida.js";
 import { menuInicio } from "./menuInicio.js"; 
 import { Opciones } from "./opciones.js";
 import { Pregunta } from "./pregunta.js";
+import { Fondo } from "./fondo.js";
 
 
 const config = {
     type: Phaser.AUTO,
     parent: "juegoContainer",
-    scene: [menuInicio, Opciones, InicioPartida, Pregunta],
+    scene: [Fondo, menuInicio, Opciones, InicioPartida, FinalPartida, Pregunta],
     scale: {
         mode: Phaser.Scale.FIT,
         parent: 'juegoContainer',
@@ -28,4 +30,10 @@ const config = {
 
 var game = new Phaser.Game(config);
 window.game = game;
+
+game.scene.start('menuInicio');
+
+
+
+
 

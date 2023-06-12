@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-5 flex items-center">
+                <div class="shrink-2 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto" />
                     </a>
@@ -25,10 +25,10 @@
                     <x-nav-link href="{{ route('comunidad') }}" :active="request()->routeIs('comunidad')">
                         {{ __('Comunidad') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('creadorPreguntas.index') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('creadorPreguntas.index') }}" :active="request()->routeIs('creadorPreguntas.index')">
                         {{ __('Crear preguntas') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-nav-link href="{{ route('juegoPersonalizado.index') }}" :active="request()->routeIs('juegoPersonalizado.index')">
                         {{ __('Juego personalizado') }}
                     </x-nav-link>
                 </div>
@@ -93,7 +93,7 @@
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
-                                    <img class="w-3/4 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="w-3/12 rounded-full object-cover" style="max-width:50% !important;" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">

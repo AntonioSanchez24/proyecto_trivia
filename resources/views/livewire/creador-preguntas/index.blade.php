@@ -19,14 +19,15 @@
                         </div>
                     @endif
                     <div class="flex items-center mb-4">
-                        <input wire:model="search" type="text" placeholder="Buscar paquetes de preguntas..." class="form-input rounded-md shadow-sm mt-1 block w-full"/>
+                        <input wire:model="search" type="text" placeholder="Buscar paquetes de preguntas..."
+                            class="form-input rounded-md shadow-sm mt-1 block w-full" />
                         <button wire:click="$emit('refreshComponent')"
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Buscar
                         </button>
                     </div>
                     @if ($paquetePreguntas->count() > 0)
-                        @foreach($paquetePreguntas as $paquete)
+                        @foreach ($paquetePreguntas as $paquete)
                             <div class="bg-white rounded-lg shadow-md p-4 flex items-start mb-4">
                                 <div class="mr-6">
                                     <img src="{{ $paquete->photo_url }}" alt="{{ $paquete->nombre }}"
@@ -35,7 +36,8 @@
                                 <div>
                                     <h2 class="text-2xl font-bold mb-2">{{ $paquete->nombre }}</h2>
                                     <p class="text-gray-600 mb-4">{{ $paquete->descripcion }}</p>
-                                    <a href="{{route('creadorPreguntas.edit', $paquete->id)}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
+                                    <a href="{{ route('creadorPreguntas.edit', $paquete->id) }}"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</a>
                                 </div>
                             </div>
                         @endforeach
@@ -45,6 +47,10 @@
                     <div class="mt-4">
                         {{ $paquetePreguntas->links() }}
                     </div>
+                    <a href="{{ route('creadorPreguntas.create') }}"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-12 rounded">Crear nuevo
+                        paquete</a>
+
                 </div>
             </div>
         </div>

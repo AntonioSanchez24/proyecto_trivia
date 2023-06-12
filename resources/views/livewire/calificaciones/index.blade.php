@@ -33,7 +33,7 @@
                                 <div class="mt-4">
                                     <div class="flex items-center mb-4" wire:ignore>
                                         <label for="dificultad" class="mr-2">Dificultad:</label>
-                                        <select wire:model="dificultadTerm" id="dificultad" 
+                                        <select wire:model="dificultadTerm" id="dificultad"
                                             class="p-3 border border-gray-300 rounded">
                                             <option value="">Todas</option>
                                             <option value="1">Fácil</option>
@@ -89,6 +89,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <br>
+                        {{ $calificaciones->links() }}
                     </div>
                 </div>
             </div>
@@ -97,8 +99,8 @@
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script>
-            document.addEventListener('livewire:load', function () {
-                Livewire.hook('afterDomUpdate', function () {
+            document.addEventListener('livewire:load', function() {
+                Livewire.hook('afterDomUpdate', function() {
                     $('#dificultad').select2();
                 });
             });

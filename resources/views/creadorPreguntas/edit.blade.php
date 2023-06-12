@@ -1,1 +1,1 @@
-@livewire('creador-preguntas.edit', $id)
+@livewire('creador-preguntas.edit', ['id' => $id])

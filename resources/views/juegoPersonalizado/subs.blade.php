@@ -1,0 +1,1 @@
+@livewire("juego-personalizado.subs")

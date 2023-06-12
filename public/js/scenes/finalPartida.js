@@ -1,113 +1,107 @@
-export class InicioPartida extends Phaser.Scene {
+export class FinalPartida extends Phaser.Scene {
     constructor() {
-        super({ key: "InicioPartida" });
+        super({ key: "FinalPartida" });
     }
 
     preload() {
-        this.load.video("background", "mp4/fondoFix.mp4", false, true);
-        this.load.image("logo", fotoPerfil);
-        this.load.image("botonEmpezar", "img/botonEmpezar.png");
-        this.load.image("botonContinuar", "img/botonContinuar.png");
+        this.load.image("fotoPerfil", fotoPerfil);
+        this.load.image("botonVolver", "img/botonVolver.png");
         this.load.image("separador", "img/barrauno.png");
+        this.load.video("fondoGanar", "mp4/fondoGanar.mp4", true);
+        this.load.video("fondoPerder", "mp4/fondoPerder2.mp4", true);
     }
 
     create() {
-        this.fondoFix = this.add.video(600, 350, "background");
-        this.fondoFix.play(true);
-        this.logo = this.add.image(350, 300, "logo");
-        this.logo.setSize(600, 600);
+        if(this.game.registry.get("ganarPartida") == true){
+            this.scene.get("Fondo").updateVictoria();
+            let fondoScene = this.scene.get("Fondo");
+        fondoScene.video = this.add.video(600, 350, "fondoGanar");
+        fondoScene.video.play('true');
+        this.fotoPerfil = this.add.image(350, 250, "fotoPerfil");
+        this.fotoPerfil.setDisplaySize(250, 250);
         var rect1 = this.add.rectangle(1200, 0, 1000, 2000, 0x7777ff, 0.95);
         var rect2 = this.add.rectangle(0, 1500, 1400, 2000, 0x7777ff, 0.8);
         this.barra = this.add.image(1150, 370, "separador");
         this.barra.setScale(1.1);
-        if (game.registry.get("pregunta") > 0) {
-            if (game.registry.get("saltoPregunta") == true) {
-                this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
-                this.botonEmpezar.setScale(0.45);
-                this.add.text(100, 50, "¡Comodín de cambio de pregunta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "45px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
-            } else {
-                this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
-                this.botonEmpezar.setScale(0.45);
-                this.add.text(125, 50, "¡Respuesta correcta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "48px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
-            }
-        } else {
-            if (game.registry.get("saltoPregunta") == true) {
-                this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
-                this.botonEmpezar.setScale(0.45);
-                this.add.text(50, 50, "¡Comodín de cambio de pregunta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "40px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
-            } else {
-                this.botonEmpezar = this.add.image(350, 630, "botonEmpezar");
-                this.botonEmpezar.setScale(0.45);
-                this.add.text(225, 50, usuario, {
-                    fontFamily: "Helvetica",
-                    fontSize: "48px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
-            }
-        }
+        this.botonEmpezar = this.add.image(350, 630, "botonVolver");
+        this.botonEmpezar.setScale(0.45);
+        this.add.text(200, 50, "¡Felicidades!", {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
+
+        this.add.text(100, 385, "Tu puntuación: " + game.registry.get("puntuacion"), {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
+        this.add.text(150, 450, "Dificultad: " + game.registry.get("dificultadText"), {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
 
         this.botonEmpezar.setInteractive();
         this.botonEmpezar.on(
             "pointerdown",
             function (event) {
                 // ...
-                this.scene.start("Pregunta");
+                location.reload();             
             },
             this
         );
         this.añadirTexto(this);
 
-        if (game.registry.get("pregunta") > 0) {
-            if (game.registry.get("dificultad") == 1) {
-                if (game.registry.get("pregunta") > 7) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 12) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            } else if (game.registry.get("dificultad") == 2) {
-                if (game.registry.get("pregunta") > 5) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 10) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            } else if (game.registry.get("dificultad") == 3) {
-                if (game.registry.get("pregunta") > 3) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 8) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            }
+        } else{
+            this.scene.get("Fondo").updateDerrota();
+            let fondoScene = this.scene.get("Fondo");
+        fondoScene.video = this.add.video(100, 100, "fondoPerder");
+        fondoScene.video.setScale(2);
+        fondoScene.video.play('true');
+        this.fotoPerfil = this.add.image(350, 250, "fotoPerfil");
+        this.fotoPerfil.setDisplaySize(250, 250);
+        var rect1 = this.add.rectangle(1200, 0, 1000, 2000, 0x7777ff, 0.95);
+        var rect2 = this.add.rectangle(0, 1500, 1400, 2000, 0x7777ff, 0.8);
+        this.barra = this.add.image(1150, 370, "separador");
+        this.barra.setScale(1.1);
+        this.botonEmpezar = this.add.image(350, 630, "botonVolver");
+        this.botonEmpezar.setScale(0.45);
+        this.add.text(200, 50, "¡Mala suerte!", {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
 
-            window.livewire.on("preguntaRecogida", (pregunta) => {
-                preguntaQuery = pregunta;
-            });
+        this.add.text(100, 385, "Tu puntuación: " + game.registry.get("puntuacion"), {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
+        this.add.text(150, 450, "Dificultad: " + game.registry.get("dificultadText"), {
+            fontFamily: "Helvetica",
+            fontSize: "48px",
+            color: "#fff",
+            fontStyle: "normal",
+        }).setStroke("#000", 3);
+
+        this.botonEmpezar.setInteractive();
+        this.botonEmpezar.on(
+            "pointerdown",
+            function (event) {
+                location.reload();             
+            },
+            this
+        );
+        this.añadirTexto(this);
+
         }
+        
     }
 
     añadirTexto(scene) {
@@ -142,7 +136,7 @@ export class InicioPartida extends Phaser.Scene {
                 var texto1 = scene.add.text(
                     1375,
                     725 - (checkPregunta + 1) * 47,
-                    element + "€",
+                    element + " pts",
                     {
                         fontFamily: "Helvetica",
                         fontSize: "30px",
@@ -167,7 +161,7 @@ export class InicioPartida extends Phaser.Scene {
                 scene.add.text(
                     1375,
                     725 - (checkPregunta + 1) * 47,
-                    element + "€",
+                    element + " pts",
                     {
                         fontFamily: "Helvetica",
                         fontSize: "30px",

@@ -73,9 +73,6 @@
                                 </select>
                             </div>
                             <div>
-                                @livewire('preguntas-form')
-                            </div>¿
-                            <div>
                                 @livewire('preguntas-form', ['paquete' => $paquete])
                             </div>
                             <div class="flex items-center justify-between">

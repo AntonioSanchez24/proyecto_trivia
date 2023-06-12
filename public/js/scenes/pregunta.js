@@ -4,7 +4,6 @@ export class Pregunta extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video("background", "mp4/fondoFix.mp4", false, true);
         this.load.image("logo", fotoPerfil);
         this.load.image("botonEmpezar", "img/botonEmpezar.png");
         this.load.image("preguntaTemplate", "img/pregunta.png");
@@ -15,14 +14,19 @@ export class Pregunta extends Phaser.Scene {
         this.load.image("comodin5050", "img/botonComodin50.png");
         this.load.image("comodinTiempo", "img/botonComodinReloj.png");
         this.load.image("comodinSalto", "img/botonComodinPregunta.png");
+        this.load.audio("correcto", "mp3/correcto.mp3");
+        this.load.audio("incorrecto", "mp3/incorrecto.mp3");
     }
 
     create() {
-        if(game.registry.get("saltoPregunta") == true){
+        if (this.scene.isSleeping("InicioPartida")) {
+            this.scene.destroy("InicioPartida");
+        }
+        if (game.registry.get("saltoPregunta") == true) {
             this.preguntaJSON = preguntaSalto;
-            game.registry.set("saltoPregunta", false); 
-        }else{
-            this.preguntaJSON = preguntaQuery;
+            game.registry.set("saltoPregunta", false);
+        } else {
+            this.preguntaJSON = preguntaQuery[game.registry.get("pregunta")];
         }
         this.preguntas = [];
         this.initialTime = 120 / this.game.registry.get("dificultad");
@@ -32,8 +36,6 @@ export class Pregunta extends Phaser.Scene {
             callbackScope: this,
             loop: true,
         });
-        this.fondoFix = this.add.video(600, 350, "background");
-        this.fondoFix.play(true);
         this.cuenta = this.add.text(32, 32, this.formatTime(this.initialTime), {
             fontFamily: "Helvetica",
             fontSize: "48px",
@@ -51,7 +53,7 @@ export class Pregunta extends Phaser.Scene {
             this.comodin5050.on(
                 "pointerdown",
                 function (event) {
-                    this.usarComodin5050();
+                    this.usarComodin5050(this);
                 },
                 this
             );
@@ -119,18 +121,18 @@ export class Pregunta extends Phaser.Scene {
     }
 
     añadirTexto(scene) {
-        var datos = this.preguntaJSON.respuestas_incorrectas;
+        var datos = scene.preguntaJSON.respuestas_incorrectas;
         var respuestas = datos.split('","');
         respuestas[0] = respuestas[0].substr(2);
         respuestas[2] = respuestas[2].substring(0, respuestas[2].length - 2);
-        respuestas[3] = this.preguntaJSON.respuesta_correcta;
+        respuestas[3] = scene.preguntaJSON.respuesta_correcta;
         var respuestaA = Math.floor(Math.random() * respuestas.length);
         this.preguntas.push(
             this.addAnswer(
                 scene,
                 385,
                 510,
-                this.respuestaTemplate1,
+                scene.respuestaTemplate1,
                 respuestas[respuestaA],
                 "A"
             )
@@ -189,8 +191,10 @@ export class Pregunta extends Phaser.Scene {
 
         if (
             pregunta.list[1].text.substring(3) ==
-            this.preguntaJSON.respuesta_correcta
+            scene.preguntaJSON.respuesta_correcta
         ) {
+            this.correcto = this.sound.add("correcto");
+            this.correcto.play();
             this.evento.paused = true;
             this.time.delayedCall(
                 1000,
@@ -241,19 +245,45 @@ export class Pregunta extends Phaser.Scene {
                     this
                 );
             } else {
+                game.registry.set("ganarPartida", true);
                 this.enviarDatos();
             }
         } else {
-            setTimeout(
-                pregunta.list[0].setTexture("respuestaIncorrecta"),
-                5000
+            this.time.delayedCall(
+                1000,
+                () => {
+                    return pregunta.list[0].setTexture("respuestaIncorrecta");
+                },
+                [],
+                this
             );
-            this.scene.start("menuInicio");
+            this.incorrecto = this.sound.add("incorrecto");
+            this.incorrecto.play();
+            game.registry.set("ganarPartida", false);
+            this.time.delayedCall(
+                1000,
+                () => {
+                    return this.time.delayedCall(
+                        1000,
+                        () => {
+                            return this.enviarDatos();
+                        },
+                        [],
+                        this
+                    );
+                },
+                [],
+                this
+            );
         }
     }
 
     siguientePregunta() {
         this.scene.start("InicioPartida");
+    }
+
+    finJuego() {
+        this.scene.start("FinalPartida");
     }
 
     formatTime(seconds) {
@@ -283,6 +313,9 @@ export class Pregunta extends Phaser.Scene {
             puntuacion: game.registry.get("puntuacion"),
             dificultad: game.registry.get("dificultad"),
         };
+
+        var self = this;
+
         $.ajax({
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -291,12 +324,14 @@ export class Pregunta extends Phaser.Scene {
             url: "/juego-subir",
             data: puntuacion,
             success: function (data) {
-                if (data == "success") {
-                    this.scene.start("menuInicio");
-                } else if (data == "error") {
-                    this.scene.start("opciones");
+                // Aquí usamos self en lugar de this
+                if (data.user_id) {
+                    self.finJuego();
+                } else {
+                    self.scene.start("opciones");
                 }
             },
+
         });
     }
 
@@ -414,15 +449,15 @@ export class Pregunta extends Phaser.Scene {
         tempText.destroy();
     }
 
-    usarComodin5050() {
-        let datos50 = this.preguntaJSON.respuestas_incorrectas;
+    usarComodin5050(scene) {
+        let datos50 = scene.preguntaJSON.respuestas_incorrectas;
         let respuestas50 = datos50.split('","');
         var respuestaA50 = Math.floor(Math.random() * respuestas50.length);
         let preguntaContador = 0;
         this.preguntas.forEach(function (pregunta) {
             if (
                 pregunta.list[1].text.substring(3) ==
-                    this.preguntaJSON.respuesta_correcta ||
+                scene.preguntaJSON.respuesta_correcta ||
                 pregunta.list[1].text.substring(3) == respuestas50[respuestaA50]
             ) {
             } else {
@@ -446,11 +481,9 @@ export class Pregunta extends Phaser.Scene {
 
     usarComodinSalto() {
         this.comodinSalto.destroy();
-
         game.registry.set("comodinSalto", false);
         game.registry.set("saltoPregunta", true);
-        
+
         this.siguientePregunta();
     }
-
 }

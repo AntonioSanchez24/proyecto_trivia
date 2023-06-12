@@ -4,65 +4,86 @@ export class InicioPartida extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video("background", "mp4/fondoFix.mp4", false, true);
-        this.load.image("logo", fotoPerfil);
+        this.load.image("fotoPerfil", fotoPerfil);
         this.load.image("botonEmpezar", "img/botonEmpezar.png");
         this.load.image("botonContinuar", "img/botonContinuar.png");
+        this.load.image("botonPlantarse", "img/botonPlantarse.png");
         this.load.image("separador", "img/barrauno.png");
     }
 
     create() {
-        this.fondoFix = this.add.video(600, 350, "background");
-        this.fondoFix.play(true);
-        this.logo = this.add.image(350, 300, "logo");
-        this.logo.setSize(600, 600);
+        this.scene.get("Fondo").update();
+        this.logo = this.add.image(350, 250, "fotoPerfil");
+        this.logo.setDisplaySize(250, 250);
         var rect1 = this.add.rectangle(1200, 0, 1000, 2000, 0x7777ff, 0.95);
         var rect2 = this.add.rectangle(0, 1500, 1400, 2000, 0x7777ff, 0.8);
         this.barra = this.add.image(1150, 370, "separador");
         this.barra.setScale(1.1);
         if (game.registry.get("pregunta") > 0) {
             if (game.registry.get("saltoPregunta") == true) {
+                this.botonPlantarse = this.add.image(
+                    100,
+                    700,
+                    "botonPlantarse"
+                );
+                this.botonPlantarse.setScale(0.2);
                 this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
                 this.botonEmpezar.setScale(0.45);
-                this.add.text(100, 50, "¡Comodín de cambio de pregunta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "45px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
+                this.add
+                    .text(100, 50, "¡Comodín de cambio de pregunta!", {
+                        fontFamily: "Helvetica",
+                        fontSize: "40px",
+                        color: "#fff",
+                        fontStyle: "normal",
+                    })
+                    .setStroke("#000", 3);
             } else {
+                this.botonPlantarse = this.add.image(
+                    100,
+                    700,
+                    "botonPlantarse"
+                );
+                this.botonPlantarse.setScale(0.2);
                 this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
                 this.botonEmpezar.setScale(0.45);
-                this.add.text(125, 50, "¡Respuesta correcta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "48px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
+                this.add
+                    .text(125, 50, "¡Respuesta correcta!", {
+                        fontFamily: "Helvetica",
+                        fontSize: "48px",
+                        color: "#fff",
+                        fontStyle: "normal",
+                    })
+                    .setStroke("#000", 3);
             }
         } else {
             if (game.registry.get("saltoPregunta") == true) {
+                this.botonPlantarse = this.add.image(
+                    100,
+                    700,
+                    "botonPlantarse"
+                );
+                this.botonPlantarse.setScale(0.2);
                 this.botonEmpezar = this.add.image(350, 630, "botonContinuar");
                 this.botonEmpezar.setScale(0.45);
-                this.add.text(50, 50, "¡Comodín de cambio de pregunta!", {
-                    fontFamily: "Helvetica",
-                    fontSize: "40px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
+                this.add
+                    .text(50, 50, "¡Comodín de cambio de pregunta!", {
+                        fontFamily: "Helvetica",
+                        fontSize: "40px",
+                        color: "#fff",
+                        fontStyle: "normal",
+                    })
+                    .setStroke("#000", 3);
             } else {
                 this.botonEmpezar = this.add.image(350, 630, "botonEmpezar");
                 this.botonEmpezar.setScale(0.45);
-                this.add.text(225, 50, usuario, {
-                    fontFamily: "Helvetica",
-                    fontSize: "48px",
-                    color: "#fff",
-                    fontStyle: "normal",
-                    strokeThickness: 2,
-                });
+                this.add
+                    .text(190, 50, usuario, {
+                        fontFamily: "Helvetica",
+                        fontSize: "48px",
+                        color: "#fff",
+                        fontStyle: "normal",
+                    })
+                    .setStroke("#000", 3);
             }
         }
 
@@ -70,44 +91,50 @@ export class InicioPartida extends Phaser.Scene {
         this.botonEmpezar.on(
             "pointerdown",
             function (event) {
-                // ...
                 this.scene.start("Pregunta");
             },
             this
         );
-        this.añadirTexto(this);
-
-        if (game.registry.get("pregunta") > 0) {
-            if (game.registry.get("dificultad") == 1) {
-                if (game.registry.get("pregunta") > 7) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 12) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            } else if (game.registry.get("dificultad") == 2) {
-                if (game.registry.get("pregunta") > 5) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 10) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            } else if (game.registry.get("dificultad") == 3) {
-                if (game.registry.get("pregunta") > 3) {
-                    Livewire.emit("nuevaPregunta", 2);
-                } else if (game.registry.get("pregunta") > 8) {
-                    Livewire.emit("nuevaPregunta", 3);
-                } else {
-                    Livewire.emit("nuevaPregunta", 1);
-                }
-            }
-
-            window.livewire.on("preguntaRecogida", (pregunta) => {
-                preguntaQuery = pregunta;
-            });
+        if (this.botonPlantarse) {
+            this.botonPlantarse.setInteractive();
+            this.botonPlantarse.on(
+                "pointerdown",
+                function (event) {
+                    this.enviarDatos();
+                },
+                this
+            );
         }
+
+        this.añadirTexto(this);
+    }
+
+    enviarDatos() {
+        var puntuacion = {
+            user_id: usuarioID,
+            tiempo: game.registry.get("tiempo"),
+            puntuacion: game.registry.get("puntuacion"),
+            dificultad: game.registry.get("dificultad"),
+        };
+
+        var self = this;
+
+        $.ajax({
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            type: "POST",
+            url: "/juego-subir",
+            data: puntuacion,
+            success: function (data) {
+                // Aquí usamos self en lugar de this
+                if (data.user_id) {
+                    self.finJuego();
+                } else {
+                    self.scene.start("opciones");
+                }
+            },
+        });
     }
 
     añadirTexto(scene) {
@@ -142,7 +169,7 @@ export class InicioPartida extends Phaser.Scene {
                 var texto1 = scene.add.text(
                     1375,
                     725 - (checkPregunta + 1) * 47,
-                    element + "€",
+                    element + " pts",
                     {
                         fontFamily: "Helvetica",
                         fontSize: "30px",
@@ -167,7 +194,7 @@ export class InicioPartida extends Phaser.Scene {
                 scene.add.text(
                     1375,
                     725 - (checkPregunta + 1) * 47,
-                    element + "€",
+                    element + " pts",
                     {
                         fontFamily: "Helvetica",
                         fontSize: "30px",
@@ -191,5 +218,9 @@ export class InicioPartida extends Phaser.Scene {
             }
             checkPregunta++;
         }, this);
+    }
+
+    finJuego() {
+        this.scene.start("FinalPartida");
     }
 }

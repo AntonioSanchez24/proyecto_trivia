@@ -23,20 +23,19 @@ public $categoria;
 public $preguntasArray = [];
 
 
-public function mount($id = null) {
-    $this->paqueteId = $id;
+public function mount($paquete = null) {
+    $this->paqueteId = $paquete->id;
 
-    if($id) {
-        $preguntas = PreguntaCustom::where('paquete_pregunta', $id)->get();
+    if($paquete) {
+        $preguntas = PreguntaCustom::where('paquete_pregunta', $this->paqueteId)->get();
 
         foreach ($preguntas as $pregunta) {
+            $incorrectas = json_decode($pregunta->respuestas_incorrectas, true);
             $this->preguntasArray[] = [
                 'id' => $pregunta->id,
                 'pregunta' => $pregunta->pregunta,
                 'respuesta_correcta' => $pregunta->respuesta_correcta,
-                'respuesta_incorrecta1' => $pregunta->respuestas_incorrectas[0],
-                'respuesta_incorrecta2' => $pregunta->respuestas_incorrectas[1],
-                'respuesta_incorrecta3' => $pregunta->respuestas_incorrectas[2],
+                'respuestas_incorrectas' => [$incorrectas[0], $incorrectas[1], $incorrectas[2]],
                 'categoria' => $pregunta->categoria,
                 'dificultad' => $pregunta->dificultad,
             ];

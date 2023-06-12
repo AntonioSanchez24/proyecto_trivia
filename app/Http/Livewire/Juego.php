@@ -32,15 +32,24 @@ class Juego extends Component
 
     public function recogerPregunta($dificultad)
     {
-        if(!isset($this->preguntasYaAparecidas[0])){
-            $this->preguntasYaAparecidas[0] = $this->pregunta->id;
-        }
+        if($dificultad == 1){
+            $pre1 = PreguntaOriginal::where('dificultad', 1)->inRandomOrder()->limit(7)->get();
+            $pre2 = PreguntaOriginal::where('dificultad', 2)->inRandomOrder()->limit(5)->get();
+            $pre3 = PreguntaOriginal::where('dificultad', 3)->inRandomOrder()->limit(3)->get();
+            $this->pregunta = $pre1->merge($pre2)->merge($pre3);
 
-        while(in_array($this->pregunta->id, $this->preguntasYaAparecidas)){
-            $this->pregunta = PreguntaOriginal::where('dificultad', $dificultad)->inRandomOrder()->first();
-        }
+        } else if($dificultad == 2){
+            $pre1 = PreguntaOriginal::where('dificultad', 1)->inRandomOrder()->limit(5)->get();
+            $pre2 = PreguntaOriginal::where('dificultad', 2)->inRandomOrder()->limit(5)->get();
+            $pre3 = PreguntaOriginal::where('dificultad', 3)->inRandomOrder()->limit(5)->get();
+            $this->pregunta = $pre1->merge($pre2)->merge($pre3);
 
-        $this->preguntasYaAparecidas[] = $this->pregunta->id;
+        }else{
+            $pre1 = PreguntaOriginal::where('dificultad', 1)->inRandomOrder()->limit(3)->get();
+            $pre2 = PreguntaOriginal::where('dificultad', 2)->inRandomOrder()->limit(5)->get();
+            $pre3 = PreguntaOriginal::where('dificultad', 3)->inRandomOrder()->limit(7)->get();
+            $this->pregunta = $pre1->merge($pre2)->merge($pre3);
+        }
 
         $this->emit('preguntaRecogida', $this->pregunta);
 
