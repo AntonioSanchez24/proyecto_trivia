@@ -53,7 +53,7 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h2 class="text-2xl mb-2">Últimos paquetes de preguntas</h2>
-                        @if ($preguntas->count() > 0)
+                        @if ($preguntas != null)
                             @foreach ($preguntas as $paquete)
                                 <div class="bg-white rounded-lg shadow-md p-4 flex items-start mb-4">
                                     <div class="mr-6">

@@ -28,7 +28,9 @@
                                 Añade/Modifica una pregunta
                             </h2>
 
-                            <form wire:submit.prevent="" method="POST">
+                            <form wire:submit.prevent="guardarPregunta" class="space-y-6">
+                                <input type="hidden" wire:model="preguntaId">
+
                                 <input type="hidden" name="csrf-token" value="{{ csrf_token() }}">
                                 <div>
                                     <x-label for="pregunta" value="{{ __('Pregunta') }}" />
@@ -94,52 +96,46 @@
                                 </div>
 
                                 <div class="flex items-center justify-end mt-4">
-                                    @if ($preguntaId)
-                                        <button type="button" wire:click="actualizarPregunta()"
-                                            class="ml-4 inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-400 active:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                            Actualizar
-                                        </button>
-                                    @else
-                                        <button type="button" wire:click="manejarDatos()"
-                                            class="ml-4 inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                            Añadir
-                                        </button>
-                                    @endif
+                                    <div>
+                                        <button type="submit"
+                                            class="px-4 py-2 bg-blue-500 text-white rounded-md">Guardar</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
+                        <br>
                         <div class="p-6 border border-black border-solid border-2 rounded-lg shadow-lg bg-white">
                             <h2 class="block text-gray-700 text-lg font-medium mb-2">
                                 Preguntas añadidas
                             </h2>
-                            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                                @foreach ($preguntasArray as $preguntaIndex => $pregunta)
-                                    <div wire:key='pregunta{{ $preguntaIndex }}'
-                                        class="border p-4 mb-4 rounded-md shadow-sm bg-gray-50">
-                                        <h1 class="text-2xl mb-2 font-semibold text-gray-700">Pregunta:
-                                            {{ $pregunta['pregunta'] }}</h1>
-                                        <h2 class="text-xl font-medium text-gray-600">Respuesta correcta:</h2>
-                                        <p class="ml-2 text-gray-700"> {{ $pregunta['respuesta_correcta'] }}</p>
-                                        <h2 class="text-xl font-medium text-gray-600">Respuestas incorrectas:</h2>
-                                        <p class="ml-2 text-gray-700">
-                                            @foreach ($pregunta['respuestas_incorrectas'] as $respuesta_incorrecta)
-                                                {{ $respuesta_incorrecta }},
-                                            @endforeach
-                                        </p>
-                                        <h2 class="text-xl font-medium text-gray-600">Categoria: </h2>
-                                        <p class="ml-2 text-gray-700"> {{ $pregunta['categoria'] }}</p>
-                                        <h2 class="text-xl font-medium text-gray-600">Dificultad: </h2>
-                                        <p class="ml-2 text-gray-700 mb-4"> {{ $pregunta['dificultad'] }}</p>
-                                        <button wire:click="eliminarPregunta({{ $preguntaIndex }})"
-                                            class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500">Eliminar</button>
-                                        <button wire:click="cargarPregunta({{ $pregunta['id'] }})"
-                                            class="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-400">Editar</button>
+                            <div class="mt-10 space-y-6">
+                                @foreach ($preguntasArray as $pregunta)
+                                    <div class="p-6 bg-white border-b border-gray-200">
+                                        <h2 class="text-xl font-bold">{{ $pregunta['pregunta'] }}</h2>
+                                        <p>{{ $pregunta['respuesta_correcta'] }}</p>
+                                        <p>
+                                            @php
+                                                // Comprueba si es un string (JSON)
+                                                if(is_string($pregunta['respuestas_incorrectas'])) {
+                                                    // Decodifica JSON a un array
+                                                    $respuestas_incorrectas = json_decode($pregunta['respuestas_incorrectas'], true);
+                                                } else {
+                                                    // Asume que es un array
+                                                    $respuestas_incorrectas = $pregunta['respuestas_incorrectas'];
+                                                }
+                                            @endphp
+                                            {{ implode(', ', $respuestas_incorrectas) }}
+                                        </p>                                        <p>{{ $pregunta['categoria'] }}</p>
+                                        <p>{{ $pregunta['dificultad'] }}</p>
+                                        <div class="mt-4">
+                                            <button wire:click="cargarPregunta({{ $pregunta['id'] }})"
+                                                class="px-4 py-2 bg-blue-500 text-white rounded-md">Editar</button>
+                                            <button wire:click="eliminarPregunta({{ $pregunta['id'] }})"
+                                                class="px-4 py-2 bg-red-500 text-white rounded-md">Eliminar</button>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>
-                            <script>
-                                console.log({{ $paqueteId }})
-                            </script>
                         </div>
                     </div>
                 </div>
