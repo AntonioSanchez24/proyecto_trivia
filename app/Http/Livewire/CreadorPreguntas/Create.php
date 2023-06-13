@@ -66,30 +66,18 @@ class Create extends Component
         $paquete = PaquetePregunta::create($datos);
         $paqueteSave = $paquete->save();
 
-        $this->emit('guardarPreguntas', $paquete->id);
+        if ($paqueteSave) {
+            $this->alert('success', '¡Tu paquete se ha subido!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => false,
+                'text' => 'Volviendo a la lista de paquetes....',
+                'confirmButtonText' => 'OK',
+                'cancelButtonText' => 'Cancelar',
+                'showCancelButton' => true,
+                'showConfirmButton' => false,
+            ]);
+            return redirect()->route('creadorPreguntas.index');
+        }
     }
-
-    public function finalizarSubida()
-    {
-
-        $this->alert('success', '¡Tu paquete se ha subido!', [
-            'position' => 'center',
-            'timer' => 3000,
-            'toast' => false,
-            'text' => 'Volviendo a la lista de paquetes....',
-            'confirmButtonText' => 'OK',
-            'cancelButtonText' => 'Cancelar',
-            'showCancelButton' => true,
-            'showConfirmButton' => false,
-        ]);
-
-        return redirect()->route('creadorPreguntas.index');
-
-
-    }
-
-
-
-
-
 }

@@ -30,7 +30,7 @@
                         @foreach ($paquetePreguntas as $paquete)
                             <div class="bg-white rounded-lg shadow-md p-4 flex items-start mb-4">
                                 <div class="mr-6">
-                                    <img src="asset({{ $paquete->photo_url }})" alt="{{ $paquete->nombre }}"
+                                    <img src="{{ $paquete->photo_url }}" alt="{{ $paquete->nombre }}"
                                         class="w-20 h-20 rounded-full mr-4"> &nbsp;
                                 </div>
                                 <div>

@@ -64,13 +64,8 @@
                                     <option value="categoria2">Cultura general</option>
                                     <option value="categoria3">Entretenimiento</option>
                                 </select>
-                            </div>
-                            <div>
-                                @livewire('preguntas-form')
-                            </div>
-
-
-                            <div class="flex items-center justify-between">
+                            </div> 
+                            <div class="flex items-center justify-between" style="margin-top: 20px !important;">
                                 <button
                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline"
                                     type="submit">

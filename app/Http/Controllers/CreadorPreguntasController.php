@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Calificaciones;
 use App\Http\Requests\StoreCalificacionesRequest;
 use App\Http\Requests\UpdateCalificacionesRequest;
+use App\Models\PaquetePregunta;
 
 class CreadorPreguntasController extends Controller
 {
@@ -46,10 +47,10 @@ class CreadorPreguntasController extends Controller
      * @param  \App\Models\Calificaciones  $Calificaciones
      * @return \Illuminate\Http\Response
      */
-    public function show(Calificaciones $Calificaciones)
-    {
-        //
+    public function form($id){
+        return view('preguntasForm', ['id' => $id]);
     }
+
 
     /**
      * Show the form for editing the specified resource.

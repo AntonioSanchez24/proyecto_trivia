@@ -24,17 +24,18 @@
                             @if ($usuario->id == Auth::id())
                             @else
                                 @if ($estado == 'aceptado')
-                                    <button wire:click="removeFriend">Eliminar amigo</button>
+                                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" wire:click="removeFriend">Eliminar amigo </button>
                                 @elseif ($estado == 'pendiente')
-                                    <button disabled>Solicitud de amigo enviada</button>
-                                @else
-                                    <button wire:click="sendFriendRequest">Enviar solicitud</button>
+                                    <button class="bg-gray-500 hover:bg-gray-700 text-black font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline"disabled>Solicitud de amigo enviada</button>
+                                @elseif($estado != 'aceptado')
+                                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline" wire:click="sendFriendRequest">Enviar solicitud</button>
                                 @endif
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
+            @if($estado == 'aceptado')
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -70,5 +71,6 @@
                     </div>
                 </div>
             </div>
+            @endif
     </x-app-layout>
 </div>

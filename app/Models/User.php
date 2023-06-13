@@ -89,7 +89,7 @@ class User extends Authenticatable
   public function friendRequests()
   {
     return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
-      ->wherePivot('status', 'pending')
+      ->wherePivot('estado', 'pendiente')
       ->withTimestamps();
   }
 

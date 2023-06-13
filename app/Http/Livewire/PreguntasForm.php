@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\PaquetePregunta;
 use Livewire\Component;
 use App\Models\PreguntaCustom;
 use WithFileUploads;
@@ -13,6 +14,7 @@ class PreguntasForm extends Component
 public $preguntaId;
 public $paqueteId;
 public $pregunta;
+public $paquete;
 public $respuestas_incorrectas = [];
 public $respuesta_incorrecta1;
 public $respuesta_incorrecta2;
@@ -22,11 +24,19 @@ public $respuesta_correcta;
 public $categoria;
 public $preguntasArray = [];
 
+protected $listeners = ['refreshComponent' => '$refresh'];
 
-public function mount($paquete = null) {
-    $this->paqueteId = $paquete->id;
+public function mount($id = null) {
+    if($id){
+        $this->paqueteId = $id;
+        $this->paquete = PaquetePregunta::where('id', $id)->first();
+    }
 
-    if($paquete) {
+    
+}
+
+public function render(){
+    if($this->paqueteId) {
         $preguntas = PreguntaCustom::where('paquete_pregunta', $this->paqueteId)->get();
 
         foreach ($preguntas as $pregunta) {
@@ -41,7 +51,10 @@ public function mount($paquete = null) {
             ];
         }
     }
+
+    return view('livewire.preguntas-form');
 }
+
 
 public function cargarPregunta($idPregunta)
 {
@@ -93,14 +106,51 @@ public function manejarDatos(){
         }
     }
 
-    $this->emit('finalizarSubida');
+    if($this->paqueteId) {
+        $preguntas = PreguntaCustom::where('paquete_pregunta', $this->paqueteId)->get();
+
+        foreach ($preguntas as $pregunta) {
+            $incorrectas = json_decode($pregunta->respuestas_incorrectas, true);
+            $this->preguntasArray[] = [
+                'id' => $pregunta->id,
+                'pregunta' => $pregunta->pregunta,
+                'respuesta_correcta' => $pregunta->respuesta_correcta,
+                'respuestas_incorrectas' => [$incorrectas[0], $incorrectas[1], $incorrectas[2]],
+                'categoria' => $pregunta->categoria,
+                'dificultad' => $pregunta->dificultad,
+            ];
+        }
+    }
+
+    $this->emit("refreshComponent");
 }
 
 public function eliminarPregunta($idPregunta)
 {
     $this->preguntasArray = array_values(array_filter($this->preguntasArray, function($pregunta) use ($idPregunta) {
+        $preguntaD = PreguntaCustom::find($pregunta['id']);
+        $preguntaD->delete();
         return $pregunta['id'] != $idPregunta;
     }));
+
+    if($this->paqueteId) {
+        $preguntas = PreguntaCustom::where('paquete_pregunta', $this->paqueteId)->get();
+
+        foreach ($preguntas as $pregunta) {
+            $incorrectas = json_decode($pregunta->respuestas_incorrectas, true);
+            $this->preguntasArray[] = [
+                'id' => $pregunta->id,
+                'pregunta' => $pregunta->pregunta,
+                'respuesta_correcta' => $pregunta->respuesta_correcta,
+                'respuestas_incorrectas' => [$incorrectas[0], $incorrectas[1], $incorrectas[2]],
+                'categoria' => $pregunta->categoria,
+                'dificultad' => $pregunta->dificultad,
+            ];
+        }
+    }
+
+    $this->emit("refreshComponent");
+    
 }
 
 

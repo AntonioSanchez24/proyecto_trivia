@@ -21,27 +21,31 @@
                                     <th class="px-4 py-2">Dificultad</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @foreach ($calificaciones as $puntuacion)
-                                    <tr>
-                                        <td class="border px-4 py-2">
-                                            {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
-                                        @if ($puntuacion->tiempo < 60)
-                                            <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
-                                        @else
+                            @if ($calificaciones != null)
+                                <tbody>
+                                    @foreach ($calificaciones as $puntuacion)
+                                        <tr>
                                             <td class="border px-4 py-2">
-                                                {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
-                                            </td>
-                                        @endif
-                                        <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
-                                        <td class="border px-4 py-2">{{ $puntuacion->dificultad }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
+                                                {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
+                                            @if ($puntuacion->tiempo < 60)
+                                                <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
+                                            @else
+                                                <td class="border px-4 py-2">
+                                                    {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
+                                                </td>
+                                            @endif
+                                            <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
+                                            <td class="border px-4 py-2">{{ $puntuacion->dificultad }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            @endif
                         </table>
-                        <div class="mt-4">
-                            {{ $calificaciones->links() }}
-                        </div>
+                        @if ($calificaciones != null)
+                            <div class="mt-4">
+                                {{ $calificaciones->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
 
@@ -83,9 +87,11 @@
                         @else
                             <h1 class="text-4xl font-bold mb-2">No se han encontrado paquetes de preguntas.</h2>
                         @endif
-                        <div class="mt-4">
-                            {{ $preguntas->links() }}
-                        </div>
+                        @if ($preguntas != null)
+                            <div class="mt-4">
+                                {{ $preguntas->links() }}
+                            </div>
+                        @endif
                     </div>
                 </div>
 

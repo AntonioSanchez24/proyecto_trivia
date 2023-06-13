@@ -54,7 +54,7 @@ class Dashboard extends Component
         }
 
 
-        
+
 
         $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
 
@@ -66,27 +66,36 @@ class Dashboard extends Component
         $perPage = 7; // Número de ítems por página.
         $offset = ($page * $perPage) - $perPage;
 
-        $paginator = new LengthAwarePaginator(
-            $this->puntuaciones->slice($offset, $perPage)->values(), // Los elementos para la página actual.
-            $this->puntuaciones->count(),
-            // El número total de elementos.
-            $perPage,
-            // El número de ítems por página.
-            $page,
-            // La página actual.
-            ['path' => request()->url(), 'query' => request()->query()] // Opciones.
-        );
+        if ($this->puntuaciones != null) {
 
-        $paginator2 = new LengthAwarePaginator(
-            $this->paquetes->slice($offset, $perPage)->values(), // Los elementos para la página actual.
-            $this->paquetes->count(),
-            // El número total de elementos.
-            $perPage,
-            // El número de ítems por página.
-            $page,
-            // La página actual.
-            ['path' => request()->url(), 'query' => request()->query()] // Opciones.
-        );
+            $paginator = new LengthAwarePaginator(
+                $this->puntuaciones->slice($offset, $perPage)->values(), // Los elementos para la página actual.
+                $this->puntuaciones->count(),
+                // El número total de elementos.
+                $perPage,
+                // El número de ítems por página.
+                $page,
+                // La página actual.
+                ['path' => request()->url(), 'query' => request()->query()] // Opciones.
+            );
+        } else {
+            $paginator = null;
+        }
+
+        if ($this->paquetes != null) {
+            $paginator2 = new LengthAwarePaginator(
+                $this->paquetes->slice($offset, $perPage)->values(), // Los elementos para la página actual.
+                $this->paquetes->count(),
+                // El número total de elementos.
+                $perPage,
+                // El número de ítems por página.
+                $page,
+                // La página actual.
+                ['path' => request()->url(), 'query' => request()->query()] // Opciones.
+            );
+        } else {
+            $paginator2 = null;
+        }
 
         return view('livewire.dashboard', ['calificaciones' => $paginator, 'preguntas' => $paginator2, 'solis' => $this->solicitudes]);
     }
