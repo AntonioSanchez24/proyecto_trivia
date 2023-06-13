@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div>
+            <br>
 
             <!-- Últimos paquetes de preguntas hechos por amigos -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -95,37 +96,38 @@
                     @endif
                 </div>
             </div>
-        </div>
+            <br>
 
-        <!-- Solicitudes de amigos -->
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 bg-white border-b border-gray-200">
-                <h2 class="text-2xl mb-2">Solicitudes de amigos</h2>
-                <ul>
-                    @foreach ($solis as $solicitud)
-                        <li class="mb-4">
-                            <div class="flex items-center">
-                                <div class="mr-4">
-                                    <a href='{{ route('perfil.mostrar', $solicitud->id) }}'>{{ $solicitud->name }}</a>
-                                </div>
+            <!-- Solicitudes de amigos -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <h2 class="text-2xl mb-2">Solicitudes de amigos</h2>
+                    <ul>
+                        @foreach ($solis as $solicitud)
+                            <li class="mb-4">
+                                <div class="flex items-center">
+                                    <div class="mr-4">
+                                        <a
+                                            href='{{ route('perfil.mostrar', $solicitud->id) }}'>{{ $solicitud->name }}</a>
+                                    </div>
 
-                                <div class="flex">
-                                    <button wire:click="acceptFriendRequest({{ $solicitud->id }})"
-                                        class="mr-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                                        Aceptar
-                                    </button>
-                                    <button wire:click="denyFriendRequest({{ $solicitud->id }})"
-                                        class="px-4 py-2 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                        Rechazar
-                                    </button>
+                                    <div class="flex">
+                                        <button wire:click="acceptFriendRequest({{ $solicitud->id }})"
+                                            class="mr-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            Aceptar
+                                        </button>
+                                        <button wire:click="denyFriendRequest({{ $solicitud->id }})"
+                                            class="px-4 py-2 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            Rechazar
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>
 </div>
