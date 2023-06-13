@@ -60,9 +60,9 @@
                                     class="shadow-inner appearance-none border border-grey-200 rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="categoria">
                                     <option value="">-- Selecciona una categoría --</option>
-                                    <option value="categoria1">Anime</option>
-                                    <option value="categoria2">Doner Kebab</option>
-                                    <option value="categoria3">Futurama</option>
+                                    <option value="categoria1">Ciencia</option>
+                                    <option value="categoria2">Cultura general</option>
+                                    <option value="categoria3">Entretenimiento</option>
                                 </select>
                             </div>
                             <div>
