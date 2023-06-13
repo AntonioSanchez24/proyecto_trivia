@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class Dashboard extends Component
 {
@@ -17,70 +19,119 @@ class Dashboard extends Component
     protected $paquetes;
     protected $solicitudes;
     public $usuarios;
+    public $paginator;
+
+    public $suscripciones;
+
 
     public function mount()
     {
+        $this->suscripciones = Auth::user()->suscripciones;
+        $this->usuarios = User::all();
         $usuario = Auth::user();
         $id_usuario = $usuario->id;
 
         if (Auth::user()->amigos == null) {
             $this->amigos = [];
         } else {
-            $this->amigos == json_decode(Auth::user()->amigos, true);
+            $this->amigos = json_decode(Auth::user()->amigos, true);
         }
 
-        $this->amigos = $usuario->amigos()->pluck('amigos.id');
+        foreach ($this->amigos as $amigoIndex => $amigo) {
+            if ($amigoIndex == 0) {
+                $this->puntuaciones = Calificaciones::where('user_id', $amigo)->get();
+            } else {
+                $this->puntuaciones = $this->puntuaciones->merge(Calificaciones::where('user_id', $amigo)->get());
+            }
+        }
 
-        $this->puntuaciones = DB::table('users')
-        ->join('amigos', function ($join) use ($id_usuario) {
-            $join->on('users.id', '=', 'amigos.friend_id')
-                ->where('amigos.user_id', '=', $id_usuario)
-                ->where('amigos.estado', '=', 'aceptado');
-        })
-        ->join('calificaciones', 'users.id', '=', 'calificaciones.user_id')
-        ->select('users.*', 'calificaciones.*')
-        ->paginate(10);
+        foreach ($this->amigos as $amigoIndex => $amigo) {
+            if ($amigoIndex == 0) {
+                $this->paquetes = PaquetePregunta::where('user_id', $amigo)->get();
+            } else {
+                $this->paquetes = $this->paquetes->merge(PaquetePregunta::where('user_id', $amigo)->get());
+            }
+        }
 
-        $this->paquetes = DB::table('users')
-        ->join('amigos', function ($join) use ($id_usuario) {
-            $join->on('users.id', '=', 'amigos.friend_id')
-                ->where('amigos.user_id', '=', $id_usuario)
-                ->where('amigos.estado', '=', 'aceptado');
-        })
-        ->join('paquete_preguntas', 'users.id', '=', 'paquete_preguntas.user_id')
-        ->select('users.*', 'paquete_preguntas.*')
-        ->paginate(10);
+
+        
 
         $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
 
     }
     public function render()
     {
-        return view('livewire.dashboard', ['calificaciones' => $this->puntuaciones, 'preguntas' => $this->paquetes, 'solis' => $this->solicitudes]);
+
+        $page = request('page', 1); // Obtenemos la página actual o por defecto la ponemos como 1.
+        $perPage = 7; // Número de ítems por página.
+        $offset = ($page * $perPage) - $perPage;
+
+        $paginator = new LengthAwarePaginator(
+            $this->puntuaciones->slice($offset, $perPage)->values(), // Los elementos para la página actual.
+            $this->puntuaciones->count(),
+            // El número total de elementos.
+            $perPage,
+            // El número de ítems por página.
+            $page,
+            // La página actual.
+            ['path' => request()->url(), 'query' => request()->query()] // Opciones.
+        );
+
+        $paginator2 = new LengthAwarePaginator(
+            $this->paquetes->slice($offset, $perPage)->values(), // Los elementos para la página actual.
+            $this->paquetes->count(),
+            // El número total de elementos.
+            $perPage,
+            // El número de ítems por página.
+            $page,
+            // La página actual.
+            ['path' => request()->url(), 'query' => request()->query()] // Opciones.
+        );
+
+        return view('livewire.dashboard', ['calificaciones' => $paginator, 'preguntas' => $paginator2, 'solis' => $this->solicitudes]);
     }
 
     public function acceptFriendRequest($senderId)
-{
-    $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $senderId)->first();
+    {
+        $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $senderId)->first();
+        $amigo = User::find($senderId);
+        if ($solicitud) {
+            $solicitud->pivot->estado = 'aceptado';
+            $solicitud->pivot->save();
 
-    if ($solicitud) {
-        $solicitud->pivot->estado = 'aceptado';
-        $solicitud->pivot->save();
+            if ($amigo->amigos != null || $amigo->amigos != "") {
+                $amigos = json_decode($amigo->amigos, true);
+                $amigos[] = Auth::id();
+                $amigo->amigos = $amigos;
+                $amigo->save();
+            } else {
+                $amigo->amigos = [Auth::id()];
+            }
+
+            if (Auth::user()->amigos != null || Auth::user()->amigos != "") {
+                $amigos = json_decode(Auth::user()->amigos, true);
+                $amigos[] = $senderId;
+                Auth::user()->amigos = $amigos;
+                Auth::user()->save();
+            } else {
+                Auth::user()->amigos = [$senderId];
+            }
+
+        }
+
+        $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
     }
 
-    $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
-}
+    public function denyFriendRequest($senderId)
+    {
+        $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $senderId)->first();
 
-public function denyFriendRequest($senderId)
-{
-    $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $senderId)->first();
+        if ($solicitud) {
+            $solicitud->pivot->estado = 'rechazado';
+            $solicitud->pivot->save();
+        }
 
-    if ($solicitud) {
-        $solicitud->pivot->estado = 'rechazado';
-        $solicitud->pivot->save();
+        $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
     }
-
-    $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
-}
 
 }

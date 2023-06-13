@@ -23,21 +23,19 @@
                             </thead>
                             <tbody>
                                 @foreach ($calificaciones as $puntuacion)
-                                    @if (in_array($puntuacion->user_id, $amigos) || $puntuacion->user_id == Auth::id())
-                                        <tr>
+                                    <tr>
+                                        <td class="border px-4 py-2">
+                                            {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
+                                        @if ($puntuacion->tiempo < 60)
+                                            <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
+                                        @else
                                             <td class="border px-4 py-2">
-                                                {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
-                                            @if ($puntuacion->tiempo < 60)
-                                                <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
-                                            @else
-                                                <td class="border px-4 py-2">
-                                                    {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
-                                                </td>
-                                            @endif
-                                            <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
-                                            <td class="border px-4 py-2">{{ $puntuacion->dificultad }}</td>
-                                        </tr>
-                                    @endif
+                                                {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
+                                            </td>
+                                        @endif
+                                        <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
+                                        <td class="border px-4 py-2">{{ $puntuacion->dificultad }}</td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -100,12 +98,13 @@
                                 <li class="mb-4">
                                     <div class="flex items-center">
                                         <div class="mr-4">
-                                            <span class="font-bold text-lg">{{ $solicitud->name }}</span>
+                                            <a
+                                                href='{{ route('perfil.mostrar', $solicitud->id) }}'>{{ $solicitud->name }}</a>
                                         </div>
 
                                         <div class="flex">
                                             <button wire:click="acceptFriendRequest({{ $solicitud->id }})"
-                                                class="mr-2 px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                                class="mr-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                                 Aceptar
                                             </button>
                                             <button wire:click="denyFriendRequest({{ $solicitud->id }})"
