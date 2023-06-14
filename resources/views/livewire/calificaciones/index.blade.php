@@ -1,21 +1,21 @@
 <div>
     <x-app-layout>
         <x-slot name="header">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Tabla de puntuaciones') }}
             </h2>
         </x-slot>
         <div>
             <x-slot name="header">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">
                     Tabla de puntuaciones
                 </h2>
             </x-slot>
             <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
+                <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div class="px-4 py-4 overflow-hidden bg-white shadow-xl sm:rounded-lg">
                         @if (session()->has('message'))
-                            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3"
+                            <div class="px-4 py-3 my-3 text-teal-900 bg-teal-100 border-t-4 border-teal-500 rounded-b shadow-md"
                                 role="alert">
                                 <div class="flex">
                                     <div>
@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                         @endif
-                        <div class="border-spacing-2 border-black border-solid border-2">
+                        <div class="border-2 border-black border-solid border-spacing-2">
                             <div class="mt-4 mb-4 ms-4 me-4">
                                 <div class="flex items-center mb-4" wire:ignore>
                                     <label for="dificultad" class="mr-2"
@@ -55,7 +55,7 @@
 
                         @if($calificaciones != null)
 
-                        <table class="table-fixed w-full">
+                        <table class="w-full table-fixed">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="px-4 py-2">Usuario</th>
@@ -67,26 +67,26 @@
                             <tbody>
                                 @foreach ($calificaciones as $puntuacion)
                                     <tr>
-                                        <td class="border px-4 py-2">
+                                        <td class="px-4 py-2 border">
                                             {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
                                         @if ($puntuacion->tiempo < 60)
-                                            <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
+                                            <td class="px-4 py-2 border">0:{{ $puntuacion->tiempo }}</td>
                                         @else
-                                            <td class="border px-4 py-2">
-                                                @if({{ $puntuacion->tiempo % 60 }} < 10)
+                                            <td class="px-4 py-2 border">
+                                                @if($puntuacion->tiempo % 60  <= 10)
                                                 {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
                                                 @else
                                                 {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
                                                 @endif
                                             </td>
                                         @endif
-                                        <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
+                                        <td class="px-4 py-2 border">{{ $puntuacion->puntuacion }}</td>
                                         @if ($puntuacion->dificultad == 1)
-                                            <td class="border px-4 py-2">Fácil</td>
+                                            <td class="px-4 py-2 border">Fácil</td>
                                         @elseif($puntuacion->dificultad == 2)
-                                            <td class="border px-4 py-2">Normal</td>
+                                            <td class="px-4 py-2 border">Normal</td>
                                         @else
-                                            <td class="border px-4 py-2">Dificil</td>
+                                            <td class="px-4 py-2 border">Dificil</td>
                                         @endif
                                     </tr>
                                 @endforeach
