@@ -29,22 +29,22 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.calificaciones.index', ['calificaciones' => $this->puntuaciones]);
+        return view('livewire.calificaciones.index', ['calificaciones' => cambiar()]);
     }
 
     public function cambiar()
     {
         if ($this->dificultadTerm !== "") {
             if ($this->opcionUsuario !== "") {
-                $this->puntuaciones = Calificaciones::where('dificultad', $this->dificultadTerm)->where('user_id', $this->opcionUsuario)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
+                return Calificaciones::where('dificultad', $this->dificultadTerm)->where('user_id', $this->opcionUsuario)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
             } else {
-                $this->puntuaciones = Calificaciones::where('dificultad', $this->dificultadTerm)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
+                return Calificaciones::where('dificultad', $this->dificultadTerm)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
             }
         } else {
             if ($this->opcionUsuario !== "") {
-                $this->puntuaciones = Calificaciones::where('user_id', $this->opcionUsuario)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
+                return Calificaciones::where('user_id', $this->opcionUsuario)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
             } else {
-                $this->puntuaciones = Calificaciones::orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
+                return Calificaciones::orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->paginate(10);
             }
         }
     }

@@ -9,7 +9,7 @@
     @livewire('juego-personalizado.play', ['id' => $id])
     <div class="py-12">
         <div class="max-w-7x1 mx-auto sm:px-6 lg:px-8">
-            <div id="juegoContainer" width="1620px" height="720px">
+            <div id="juegoContainer" width="1620px" height="720px" autofocus="true">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 </div>
             </div>

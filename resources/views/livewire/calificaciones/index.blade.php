@@ -45,7 +45,7 @@
                                             <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
                                         @endforeach
                                     </select>
-                                    <button wire:click="cambiar"
+                                    <button wire:click="$emit('refreshComponent')">
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                         style="margin-left: 30px !important;">
                                         Buscar
@@ -94,8 +94,6 @@
                         </table>
                         <br>
                         {{ $calificaciones->links() }}
-                        @else
-                        <h1 class="text-xl">No hay puntuaciones de este tipo.</h1>
                         @endif  
                     </div>
                 </div>
