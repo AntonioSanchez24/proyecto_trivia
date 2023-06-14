@@ -45,11 +45,7 @@
                                             <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
                                         @endforeach
                                     </select>
-                                    <button wire:click="$emit('refreshComponent')"
-                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                        style="margin-left: 30px !important;">
-                                        Buscar
-                                    </button>
+
                                 </div>
 
                             </div>
@@ -77,7 +73,11 @@
                                             <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
                                         @else
                                             <td class="border px-4 py-2">
-                                                {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
+                                                @if({{ $puntuacion->tiempo % 60 }} < 10)
+                                                {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
+                                                @else
+                                                {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
+                                                @endif
                                             </td>
                                         @endif
                                         <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>

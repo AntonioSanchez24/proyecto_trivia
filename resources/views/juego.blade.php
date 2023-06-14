@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Juego') }}
         </h2>
     </x-slot>
@@ -9,9 +9,9 @@
     <livewire:juego>
 
         <div class="py-12">
-            <div class="max-w-7x1 mx-auto sm:px-6 lg:px-8">
-                <div id="juegoContainer" width="1620px" height="720px">
-                    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="mx-auto max-w-7x1 sm:px-6 lg:px-8">
+                <div id="juegoContainer" width="1620px" height="720px" autofocus="true">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
                     </div>
                 </div>
             </div>
