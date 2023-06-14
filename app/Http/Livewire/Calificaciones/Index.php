@@ -29,7 +29,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.calificaciones.index', ['calificaciones' => cambiar()]);
+        $calificar = this.cambiar();
+        return view('livewire.calificaciones.index', ['calificaciones' => $calificar]);
     }
 
     public function cambiar()
