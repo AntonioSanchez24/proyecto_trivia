@@ -9,6 +9,7 @@
     <livewire:juego>
 
         <div class="py-12">
+            <x-banner data="{ show: true, style: danger, message: 'El juego puede tardar un poco en cargar en conexiones limitadas.' }"/>
             <div class="mx-auto max-w-7x1 sm:px-6 lg:px-8">
                 <div id="juegoContainer" width="1620px" height="720px" autofocus="true">
                     <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
