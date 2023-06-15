@@ -19,14 +19,20 @@ class Mostrar extends Component
     {
         $listaAmigos = json_decode(Auth::user()->amigos, true);
         $this->usuario = User::where('name', $usuario)->first();
-        if($listaAmigos != null){
-            if(in_array($this->usuario->id, $listaAmigos)){
+        if ($listaAmigos != null) {
+            if (in_array($this->usuario->id, $listaAmigos)) {
                 $this->estado = "aceptado";
             }
         }
 
         $this->calificaciones = Calificaciones::where('user_id', $this->usuario->id)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->get();
 
+        $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $this->usuario->id)->first();
+        if ($solicitud) {
+            if ($solicitud->pivot->estado == 'pendiente') {
+                $this->estado = 'pendiente';
+            }
+        }
     }
 
     public function render()
@@ -61,16 +67,15 @@ class Mostrar extends Component
                 break;
             }
         }
-            array_splice($tuLista, $numeroEliminar, 1);
-            array_splice($miLista, $numeroEliminar2, 1);
+        array_splice($tuLista, $numeroEliminar, 1);
+        array_splice($miLista, $numeroEliminar2, 1);
 
-            Auth::user()->amigos = json_encode($miLista);
-            $this->usuario->amigos = json_encode($tuLista);
+        Auth::user()->amigos = json_encode($miLista);
+        $this->usuario->amigos = json_encode($tuLista);
 
-            Auth::user()->save();
-            $this->usuario->save();
+        Auth::user()->save();
+        $this->usuario->save();
 
-            $this->estado = null;
+        $this->estado = null;
     }
-
 }
