@@ -71,7 +71,7 @@ class Edit extends Component
         $paquete = PaquetePregunta::find($this->paqueteId);
         $paquete->update($datos);
 
-        $this->emit('actualizarPreguntas', $paquete->id);
+        $this->finalizarSubida();
     }
 
     public function finalizarSubida()
