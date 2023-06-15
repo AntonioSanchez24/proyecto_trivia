@@ -53,47 +53,39 @@
                         <br>
 
 
-                        @if($calificaciones != null)
+                        @if ($calificaciones != null)
 
-                        <table class="w-full table-fixed">
-                            <thead>
-                                <tr class="bg-gray-100">
-                                    <th class="px-4 py-2">Usuario</th>
-                                    <th class="px-4 py-2">Tiempo</th>
-                                    <th class="px-4 py-2">Puntuación</th>
-                                    <th class="px-4 py-2">Dificultad</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($calificaciones as $puntuacion)
-                                    <tr>
-                                        <td class="px-4 py-2 border">
-                                            {{ $usuarios->find($puntuacion->user_id)->name }}</td>
-                                        @if ($puntuacion->tiempo < 60)
-                                            <td class="px-4 py-2 border">0:{{ $puntuacion->tiempo }}</td>
-                                        @else
-                                            <td class="px-4 py-2 border">
-                                                @if($puntuacion->tiempo % 60  <= 10)
-                                                {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
-                                                @else
-                                                {{ floor($puntuacion->tiempo / 60) }}:0{{ $puntuacion->tiempo % 60 }}
-                                                @endif
-                                            </td>
-                                        @endif
-                                        <td class="px-4 py-2 border">{{ $puntuacion->puntuacion }}</td>
-                                        @if ($puntuacion->dificultad == 1)
-                                            <td class="px-4 py-2 border">Fácil</td>
-                                        @elseif($puntuacion->dificultad == 2)
-                                            <td class="px-4 py-2 border">Normal</td>
-                                        @else
-                                            <td class="px-4 py-2 border">Dificil</td>
-                                        @endif
+                            <table class="w-full table-fixed">
+                                <thead>
+                                    <tr class="bg-gray-100">
+                                        <th class="px-4 py-2">Usuario</th>
+                                        <th class="px-4 py-2">Tiempo</th>
+                                        <th class="px-4 py-2">Puntuación</th>
+                                        <th class="px-4 py-2">Dificultad</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <br>
-                        {{ $calificaciones->links() }}
+                                </thead>
+                                <tbody>
+                                    @foreach ($calificaciones as $puntuacion)
+                                        <tr>
+                                            <td class="px-4 py-2 border">
+                                                {{ $usuarios->find($puntuacion->user_id)->name }}</td>
+                                            <td class="px-4 py-2 border">
+                                                {{ gmdate('i:s', $puntuacion->tiempo) }}
+                                            </td>
+                                            <td class="px-4 py-2 border">{{ $puntuacion->puntuacion }}</td>
+                                            @if ($puntuacion->dificultad == 1)
+                                                <td class="px-4 py-2 border">Fácil</td>
+                                            @elseif($puntuacion->dificultad == 2)
+                                                <td class="px-4 py-2 border">Normal</td>
+                                            @else
+                                                <td class="px-4 py-2 border">Dificil</td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <br>
+                            {{ $calificaciones->links() }}
                         @endif
                     </div>
                 </div>
