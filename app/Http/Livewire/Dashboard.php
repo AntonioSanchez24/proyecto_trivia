@@ -26,7 +26,6 @@ class Dashboard extends Component
 
     public function mount()
     {
-        $this->suscripciones = Auth::user()->suscripciones;
         $this->usuarios = User::all();
         $usuario = Auth::user();
         $id_usuario = $usuario->id;
@@ -35,6 +34,12 @@ class Dashboard extends Component
             $this->amigos = [];
         } else {
             $this->amigos = json_decode(Auth::user()->amigos, true);
+        }
+
+        if (Auth::user()->suscriptiones == null) {
+            $this->suscripciones = [];
+        } else {
+            $this->suscripciones = json_decode(Auth::user()->suscripciones, true);
         }
 
         foreach ($this->amigos as $amigoIndex => $amigo) {
