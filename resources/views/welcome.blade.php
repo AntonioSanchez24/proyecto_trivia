@@ -53,6 +53,12 @@
                                 ¡Inicia sesión para jugar!
                             </a>
                         </div>
+                        <div>
+                            <a href="{{ route('register') }}"
+                                class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700">
+                                ¿No tienes cuenta? ¡Regístrate!
+                            </a>
+                        </div>
                     @endif
                 </div>
             </div>
