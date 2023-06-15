@@ -75,7 +75,7 @@ export class InicioPartida extends Phaser.Scene {
                     .setStroke("#000", 3);
             } else {
                 let point1 = { x: 0, y: 50 }; // Primer punto
-                let point2 = { x: 500, y: 50 }; // Segundo punto
+                let point2 = { x: 400, y: 50 }; // Segundo punto
 
                 // Calculamos el punto medio entre los dos puntos
                 let midPoint = { x: (point1.x + point2.x) / 2, y: (point1.y + point2.y) / 2 };
