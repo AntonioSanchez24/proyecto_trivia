@@ -22,7 +22,7 @@
                         <div class="mt-2">
                             <p class="text-sm text-gray-600">{{ $usuario->description }}</p>
                         </div>
-                        <div class="flex items-center justify-center h-screen">
+                        <div class="flex items-center justify-center h-10">
                             @if ($usuario->id == Auth::id())
                             @else
                                 @if ($estado == 'aceptado')

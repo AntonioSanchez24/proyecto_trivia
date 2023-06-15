@@ -111,19 +111,21 @@ class Dashboard extends Component
             if ($amigo->amigos != null || $amigo->amigos != "") {
                 $amigos = json_decode($amigo->amigos, true);
                 $amigos[] = Auth::id();
-                $amigo->amigos = $amigos;
+                $amigo->amigos = json_encode($amigos);
                 $amigo->save();
             } else {
-                $amigo->amigos = [Auth::id()];
+                $amigo->amigos = json_encode([Auth::id()]);
+                $amigo->save();
+
             }
 
             if (Auth::user()->amigos != null || Auth::user()->amigos != "") {
                 $amigos = json_decode(Auth::user()->amigos, true);
                 $amigos[] = $senderId;
-                Auth::user()->amigos = $amigos;
+                Auth::user()->amigos = json_encode($amigos);
                 Auth::user()->save();
             } else {
-                Auth::user()->amigos = [$senderId];
+                Auth::user()->amigos = json_encode([$senderId]);
             }
 
         }
