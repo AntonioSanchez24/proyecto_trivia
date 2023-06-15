@@ -74,10 +74,16 @@ export class InicioPartida extends Phaser.Scene {
                     })
                     .setStroke("#000", 3);
             } else {
+                let point1 = { x: 0, y: 50 }; // Primer punto
+                let point2 = { x: 1150, y: 50 }; // Segundo punto
+
+                // Calculamos el punto medio entre los dos puntos
+                let midPoint = { x: (point1.x + point2.x) / 2, y: (point1.y + point2.y) / 2 };
+
                 this.botonEmpezar = this.add.image(350, 630, "botonEmpezar");
                 this.botonEmpezar.setScale(0.45);
                 this.add
-                    .text(190, 50, usuario, {
+                    .text(midPoint.x, midPoint.y, 50, usuario, {
                         fontFamily: "Helvetica",
                         fontSize: "48px",
                         color: "#fff",

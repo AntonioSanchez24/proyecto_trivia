@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
@@ -8,10 +8,10 @@
     <div class="py-12">
         <div>
             <div>
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <h2 class="text-2xl mb-2">Últimas calificaciones</h2>
-                        <table class="table-fixed w-full">
+                        <h2 class="mb-2 text-2xl">Últimas calificaciones</h2>
+                        <table class="w-full table-fixed">
                             <thead>
                                 <tr class="bg-gray-100">
                                     <th class="px-4 py-2">Usuario</th>
@@ -21,23 +21,25 @@
                                 </tr>
                             </thead>
                             @if ($calificaciones != null)
-                                <tbody>
-                                    @foreach ($calificaciones as $puntuacion)
-                                        <tr>
-                                            <td class="border px-4 py-2">
-                                                {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
-                                            @if ($puntuacion->tiempo < 60)
-                                                <td class="border px-4 py-2">0:{{ $puntuacion->tiempo }}</td>
-                                            @else
-                                                <td class="border px-4 py-2">
-                                                    {{ floor($puntuacion->tiempo / 60) }}:{{ $puntuacion->tiempo % 60 }}
-                                                </td>
-                                            @endif
-                                            <td class="border px-4 py-2">{{ $puntuacion->puntuacion }}</td>
-                                            <td class="border px-4 py-2">{{ $puntuacion->dificultad }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
+                            <tbody>
+                                @foreach ($calificaciones as $puntuacion)
+                                    <tr>
+                                        <td class="px-4 py-2 border">
+                                            {{ $usuarios->find($puntuacion->user_id)->name }}</td>
+                                        <td class="px-4 py-2 border">
+                                            {{ gmdate('i:s', $puntuacion->tiempo) }}
+                                        </td>
+                                        <td class="px-4 py-2 border">{{ $puntuacion->puntuacion }}</td>
+                                        @if ($puntuacion->dificultad == 1)
+                                            <td class="px-4 py-2 border">Fácil</td>
+                                        @elseif($puntuacion->dificultad == 2)
+                                            <td class="px-4 py-2 border">Normal</td>
+                                        @else
+                                            <td class="px-4 py-2 border">Dificil</td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
                             @endif
                         </table>
                         @if ($calificaciones != null)
@@ -51,19 +53,19 @@
             <br>
 
             <!-- Últimos paquetes de preguntas hechos por amigos -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h2 class="text-2xl mb-2">Últimos paquetes de preguntas</h2>
+                    <h2 class="mb-2 text-2xl">Últimos paquetes de preguntas</h2>
                     @if ($preguntas != null)
                         @foreach ($preguntas as $paquete)
-                            <div class="bg-white rounded-lg shadow-md p-4 flex items-start mb-4">
+                            <div class="flex items-start p-4 mb-4 bg-white rounded-lg shadow-md">
                                 <div class="mr-6">
                                     <img src="{{ $paquete->photo_url }}" alt="{{ $paquete->nombre }}"
-                                        class="w-20 h-20 rounded-full mr-4"> &nbsp;
+                                        class="w-20 h-20 mr-4 rounded-full"> &nbsp;
                                 </div>
                                 <div>
-                                    <h2 class="text-2xl font-bold mb-2">{{ $paquete->nombre }}</h2>
-                                    <p class="text-gray-600 mb-4">{{ $paquete->descripcion }}</p>
+                                    <h2 class="mb-2 text-2xl font-bold">{{ $paquete->nombre }}</h2>
+                                    <p class="mb-4 text-gray-600">{{ $paquete->descripcion }}</p>
                                     @if ($suscripciones != null)
                                         @if (in_array($paquete->id, $suscripciones))
                                             <button wire:click="desuscribirse({{ $paquete->id }})"
@@ -86,7 +88,7 @@
                             </div>
                         @endforeach
                     @else
-                        <h1 class="text-4xl font-bold mb-2">No se han encontrado paquetes de preguntas.</h2>
+                        <h1 class="mb-2 text-4xl font-bold">No se han encontrado paquetes de preguntas.</h2>
                     @endif
                     @if ($preguntas != null)
                         <div class="mt-4">
@@ -98,9 +100,9 @@
             <br>
 
             <!-- Solicitudes de amigos -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <h2 class="text-2xl mb-2">Solicitudes de amigos</h2>
+                    <h2 class="mb-2 text-2xl">Solicitudes de amigos</h2>
                     <ul>
                         @foreach ($solis as $solicitud)
                             <li class="mb-4">
@@ -112,7 +114,7 @@
 
                                     <div class="flex">
                                         <button wire:click="acceptFriendRequest({{ $solicitud->id }})"
-                                            class="mr-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                                            class="px-4 py-2 mr-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                             Aceptar
                                         </button>
                                         <button wire:click="denyFriendRequest({{ $solicitud->id }})"
