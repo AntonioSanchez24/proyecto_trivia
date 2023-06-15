@@ -31,7 +31,6 @@
                     </div>
                 </div>
             </div>
-            <div id="hola">si</div>
 
             <script>
                 window.onload = function() {
