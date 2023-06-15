@@ -78,15 +78,16 @@ export class InicioPartida extends Phaser.Scene {
                 this.botonEmpezar = this.add.image(350, 630, "botonEmpezar");
                 this.botonEmpezar.setScale(0.45);
                 this.textoUsuario = this.add
-                    .text(0, 50, usuario, {
+                    .text(220, 50, "¿Estás listo?", {
                         fontFamily: "Helvetica",
                         fontSize: "48px",
                         color: "#fff",
+                        align: 'left',
                         fontStyle: "normal",
                     })
-                    .setStroke("#000", 3).setOrigin(0.5, 0.5);
+                    .setStroke("#000", 3);
+
             }
-            this.textoUsuario.x = ( 690 - this.textoUsuario.width) / 2;
 
         }
 
