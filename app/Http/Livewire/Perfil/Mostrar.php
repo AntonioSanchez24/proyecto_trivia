@@ -19,9 +19,12 @@ class Mostrar extends Component
     {
         $listaAmigos = json_decode(Auth::user()->amigos, true);
         $this->usuario = User::where('name', $usuario)->first();
-        if(in_array($this->usuario->id, $listaAmigos)){
-            $this->estado = "aceptado";
+        if($listaAmigos != null){
+            if(in_array($this->usuario->id, $listaAmigos)){
+                $this->estado = "aceptado";
+            }
         }
+
         $this->calificaciones = Calificaciones::where('user_id', $this->usuario->id)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->get();
 
     }
