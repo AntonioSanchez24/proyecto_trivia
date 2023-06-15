@@ -58,7 +58,7 @@ class Create extends Component
 
         $imageName = $this->photo->storePublicly('photos', 'public');
 
-        $this->photo_url = asset('storage/' . $imageName);
+        $this->photo_url = 'storage/' . $imageName;
 
         $datos['photo_url'] = $this->photo_url;
         $datos['user_id'] = Auth::id();
