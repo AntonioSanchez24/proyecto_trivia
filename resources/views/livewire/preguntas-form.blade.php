@@ -20,7 +20,7 @@
                         <p class="mb-4 text-gray-600">{{ $paquete->descripcion }}</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid items-center grid-cols-3 gap-4">
                     <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border border-2 border-black border-solid rounded-lg shadow-lg">
                             <h2 class="block mb-2 text-lg font-medium text-gray-700">
