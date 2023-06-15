@@ -64,7 +64,7 @@ class Edit extends Component
 
         if($this->photo){
             $imageName = $this->photo->storePublicly('photos', 'public');
-            $this->photo_url = asset('storage/' . $imageName);
+            $this->photo_url = 'storage/' . $imageName;
             $datos['photo_url'] = $this->photo_url;
         }
 
