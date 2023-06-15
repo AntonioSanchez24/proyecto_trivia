@@ -7,13 +7,12 @@ export class menuInicio extends Phaser.Scene {
         this.load.image("logo", "img/logoJuego.png");
         this.load.image("botonInicio", "img/botonInicio.png");
         this.load.image("botonOpciones", "img/botonOpciones.png");
-        if (typeof game.registry.get("dificultad") == "undefined") {
+        if (game.registry.get("dificultad") == 1 || game.registry.get("dificultad") == 2 || game.registry.get("dificultad") == 3 ) {
+            this.dificultad = game.registry.get("dificultad");
+        } else {
             this.dificultad = 2;
             game.registry.set("dificultad", this.dificultad);
             game.registry.set("dificultadText", "Normal");
-
-        } else {
-            this.dificultad = game.registry.get("dificultad");
         }
         game.registry.set("pregunta", 0);
         game.registry.set("puntuacion", 0);
