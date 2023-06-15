@@ -28,7 +28,14 @@ class Mostrar extends Component
         $this->calificaciones = Calificaciones::where('user_id', $this->usuario->id)->orderBy('puntuacion', 'DESC')->orderBy('dificultad', 'DESC')->orderBy('tiempo', 'DESC')->get();
 
         $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $this->usuario->id)->first();
-        if ($solicitud) {
+        $solicitud2 = $this->usuario->solicitudesAmistadPendientes()->where('user_id', Auth::id())->first();
+
+        if ($solicitud != null) {
+            if ($solicitud->pivot->estado == 'pendiente') {
+                $this->estado = 'pendiente';
+            }
+        }
+        if ($solicitud2 != null) {
             if ($solicitud->pivot->estado == 'pendiente') {
                 $this->estado = 'pendiente';
             }
