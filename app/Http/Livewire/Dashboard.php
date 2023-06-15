@@ -104,6 +104,8 @@ class Dashboard extends Component
     {
         $solicitud = Auth::user()->solicitudesAmistadPendientes()->where('user_id', $senderId)->first();
         $amigo = User::find($senderId);
+        $usuarioActual = User::find(Auth::id());
+
         if ($solicitud) {
             $solicitud->pivot->estado = 'aceptado';
             $solicitud->pivot->save();
@@ -120,17 +122,18 @@ class Dashboard extends Component
             }
 
             if (Auth::user()->amigos != null || Auth::user()->amigos != "") {
-                $amigos = json_decode(Auth::user()->amigos, true);
+                $amigos = json_decode($usuarioActual->amigos, true);
                 $amigos[] = $senderId;
-                Auth::user()->amigos = json_encode($amigos);
-                Auth::user()->save();
+                $usuarioActual->amigos = json_encode($amigos);
+                $usuarioActual->save();
             } else {
-                Auth::user()->amigos = json_encode([$senderId]);
+                $usuarioActual->amigos = json_encode([$senderId]);
+                $usuarioActual->save();
             }
 
         }
 
-        $this->solicitudes = Auth::user()->solicitudesAmistadPendientes;
+        $this->solicitudes = $usuarioActual->solicitudesAmistadPendientes;
     }
 
     public function denyFriendRequest($senderId)
