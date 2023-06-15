@@ -68,7 +68,7 @@
                                 @foreach ($calificaciones as $puntuacion)
                                     <tr>
                                         <td class="px-4 py-2 border">
-                                            {{ $usuarios->find($puntuacion->user_id)->get()->first()->name }}</td>
+                                            {{ $usuarios->find($puntuacion->user_id)->name }}</td>
                                         @if ($puntuacion->tiempo < 60)
                                             <td class="px-4 py-2 border">0:{{ $puntuacion->tiempo }}</td>
                                         @else
