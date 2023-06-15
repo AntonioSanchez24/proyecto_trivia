@@ -1,9 +1,11 @@
 <div>
     <script>
-        @if(asset("storage/" . Auth::user()->profile_photo_path) !== null)
-        var fotoPerfil = '{{ asset("storage/" . Auth::user()->profile_photo_path) }}';
+        @if(Auth::user()->profile_photo_path == null)
+        var fotoPerfil = 'img/default.jpg';
+        console.log(fotoPerfil)
         @else
-        var fotoPerfil = '{{asset("img/default.jpg")}}';
+        var fotoPerfil = '{{ asset("storage/" . Auth::user()->profile_photo_path) }}';
+
         @endif
         var usuario = '{{Auth::user()->name}}';
         var usuarioID = '{{Auth::user()->id}}';
