@@ -12,7 +12,7 @@
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="flex items-center p-4 mb-4 bg-white rounded-lg shadow-md">
                     <div class="mr-6">
-                        <img src="{{ $paquete->photo_url }}" alt="{{ $paquete->nombre }}"
+                        <img src="{{ asset('$paquete->photo_url') }}" alt="{{ $paquete->nombre }}"
                             class="w-20 h-20 mr-4 rounded-full"> &nbsp;
                     </div>
                     <div>
