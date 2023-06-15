@@ -84,7 +84,7 @@ export class InicioPartida extends Phaser.Scene {
                         color: "#fff",
                         fontStyle: "normal",
                     })
-                    .setStroke("#000", 3);
+                    .setStroke("#000", 3).setOrigin(0.5, 0.5);
             }
             this.textoUsuario.x = ( 690 - this.textoUsuario.width) / 2;
 
