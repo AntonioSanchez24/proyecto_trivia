@@ -43,8 +43,34 @@ class Mostrar extends Component
 
     public function removeFriend()
     {
-        auth()->user()->removeFriend($this->usuario);
-        $this->estado = null;
+        $numeroEliminar = 0;
+        $numeroEliminar2 = 0;
+        $miLista = json_decode(Auth::user()->amigos, true);
+        $tuLista = json_decode($this->usuario->amigos, true);
+
+        foreach ($tuLista as $amigoIndex => $amigo) {
+            if ($amigo == Auth::id()) {
+                $numeroEliminar = $amigoIndex;
+                break;
+            }
+        }
+
+        foreach ($miLista as $amigoIndex => $amigo) {
+            if ($amigo == $this->usuario->id) {
+                $numeroEliminar2 = $amigoIndex;
+                break;
+            }
+        }
+            array_splice($tuLista, $numeroEliminar, 1);
+            array_splice($miLista, $numeroEliminar2, 1);
+
+            Auth::user()->amigos = json_encode($miLista);
+            $this->usuario->amigos = json_encode($tuLista);
+
+            Auth::user()->save();
+            $this->usuario->save();
+
+            $this->estado = null;
     }
 
 }
