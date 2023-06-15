@@ -31,14 +31,10 @@ class Mostrar extends Component
         $solicitud2 = $this->usuario->solicitudesAmistadPendientes()->where('user_id', Auth::id())->first();
 
         if ($solicitud != null) {
-            if ($solicitud->pivot->estado == 'pendiente') {
-                $this->estado = 'pendiente';
-            }
+            $this->estado = 'pendiente';
         }
         if ($solicitud2 != null) {
-            if ($solicitud->pivot->estado == 'pendiente') {
-                $this->estado = 'pendiente';
-            }
+            $this->estado = 'pendiente';
         }
     }
 
